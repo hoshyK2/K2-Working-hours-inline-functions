@@ -124,7 +124,7 @@
     <value>Returns the difference in time between two dates, only considering hours within the provided working hours zone.  Warning - this will return a negative number if the end date is before the start date.  Remember you can't set escalations in the past on K2.</value>
   </data>
   <data name="DateDiffName" xml:space="preserve">
-    <value>Working Hours Date Diff</value>
+    <value>WorkingHoursDateDiff</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -133,7 +133,7 @@
   <data name="DateDiffEndDateDescription" xml:space="preserve">
     <value>End Date</value>
   </data>
-  <data name="DateDiffEndName" xml:space="preserve">
+  <data name="DateDiffEndDateName" xml:space="preserve">
     <value>End Date</value>
   </data>
   <data name="DateDiffStartDateDescription" xml:space="preserve">
@@ -146,6 +146,30 @@
     <value>Working hours zone name - Empty for default working hours</value>
   </data>
   <data name="DateDiffZoneName" xml:space="preserve">
-    <value>WorkingHours</value>
+    <value>WorkingHoursZoneName</value>
+  </data>
+  <data name="CalculateEscalationDateDescription" xml:space="preserve">
+    <value>Calculates when an escalation will occur against the working hours clock given the zone, current time and number of seconds</value>
+  </data>
+  <data name="CalculateEscalationDateName" xml:space="preserve">
+    <value>Calculate Escalation Date</value>
+  </data>
+  <data name="CalculateEscalationDateSecondsDescription" xml:space="preserve">
+    <value>secondsDescription</value>
+  </data>
+  <data name="CalculateEscalationDateSecondsName" xml:space="preserve">
+    <value>secondsName</value>
+  </data>
+  <data name="CalculateEscalationDateStartDateDescription" xml:space="preserve">
+    <value>startDateDescription</value>
+  </data>
+  <data name="CalculateEscalationDateStartDateName" xml:space="preserve">
+    <value>startDateName</value>
+  </data>
+  <data name="CalculateEscalationDateZoneNameDescription" xml:space="preserve">
+    <value>The name of the Working Hours Zone</value>
+  </data>
+  <data name="CalculateEscalationDateZoneNameName" xml:space="preserve">
+    <value>Zone Name</value>
   </data>
 </root>
