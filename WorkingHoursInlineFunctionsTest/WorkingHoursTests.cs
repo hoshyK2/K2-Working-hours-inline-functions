@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SourceCode.Workflow.Management;
-using K2NE;
+using WorkingHoursInlineFunctions;
 
 namespace WorkingHoursInlineFunctionsTest
 {
@@ -87,37 +87,37 @@ namespace WorkingHoursInlineFunctionsTest
             //starts inside, ends outside - crosses multiple sections
             startDate = new DateTime(2011, 03, 14, 10, 00, 00);
             endDate = new DateTime(2011, 03, 14, 19, 00, 00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(6, 0, 0).TotalMinutes, result);
 
             //starts outside, ends inside - crossing multiple sections
             startDate = new DateTime(2011,03,14,08,00,00);
             endDate = new DateTime(2011,03,14,15,00,00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(5, 0, 0).TotalMinutes, result);
 
             //starts inside, ends inside - crossing multiple sections
             startDate = new DateTime(2011, 03, 14, 10, 00, 00);
             endDate = new DateTime(2011, 03, 14, 15, 00, 00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(4, 0, 0).TotalMinutes, result);
 
             //one exception day
             startDate = new DateTime(2011, 12, 26, 09, 00, 00);
             endDate = new DateTime(2011, 12, 26, 17, 00, 00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(0, 0, 0).TotalMinutes, result);
 
             //starts inside, ends inside - crossing multiple sections and one exception day and one weekend day
             startDate = new DateTime(2011, 12, 26, 09, 00, 00);
             endDate = new DateTime(2011, 12, 27, 17, 00, 00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(7, 0, 0).TotalMinutes, result);
 
             //crosses year boundry, starts outside, ends outside, crosses exception date
             startDate = new DateTime(2011, 12, 31, 09, 00, 00);
             endDate = new DateTime(2012, 01, 03, 19, 00, 00);
-            result = WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
+            result = WorkingHoursInlineFunctions.WorkingHoursInlineFunctions.WorkingHoursDateDiffAsMinutes(workingHoursZoneName, startDate, endDate);
             Assert.AreEqual(new TimeSpan(7, 0, 0).TotalMinutes, result);
            
         }

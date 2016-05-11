@@ -10,13 +10,13 @@ using SourceCode.Workflow.Management;
 
 using System.Linq;
 
-namespace K2NE
+namespace WorkingHoursInlineFunctions
 {
     /// <summary>
     /// A class comprising functions.
     /// </summary>
     // Must be a public class.
-    [Category("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "CategoryName", typeof(WorkingHoursInlineFunctions))]
+    [Category("WorkingHoursInlineFunctions.Properties.Resources", "CategoryName", typeof(WorkingHoursInlineFunctions))]
     public class WorkingHoursInlineFunctions
     {
         /*
@@ -39,24 +39,95 @@ namespace K2NE
          * Note: SharePoint Web Server Extensions install path is usually: "C:\Program Files (x86)\Common Files\Microsoft Shared\Web Server Extensions"
          */
 
-        #region Double WorkingHoursDateDiffAsMinutes(string zoneName, DateTime startDate, DateTime endDate)
-        [DisplayName("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffName", typeof(WorkingHoursInlineFunctions))]
-        [Description("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffDescription", typeof(WorkingHoursInlineFunctions))]
+        #region Default Constructor
+        /// <summary>
+        /// Instantiates a new Notification1.
+        /// </summary>
+        public WorkingHoursInlineFunctions()
+        {
+            // No implementation necessary.
+        }
+        #endregion
+
+        #region Double WorkingHoursDateDiff(string zoneName, DateTime startDate, DateTime endDate)
+
+        [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffName", typeof(WorkingHoursInlineFunctions))]
+        [Description("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffDescription", typeof(WorkingHoursInlineFunctions))]
         [K2Icon(typeof(WorkingHoursInlineFunctions), "Resources.Icon.png")]
         public static Double WorkingHoursDateDiffAsMinutes(
-            [DisplayName("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffZoneName", typeof(WorkingHoursInlineFunctions))]
-            [Description("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffZoneDescription", typeof(WorkingHoursInlineFunctions))]
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffZoneName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffZoneDescription", typeof(WorkingHoursInlineFunctions))]
             string zoneName,
-            [DisplayName("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffStartDateName", typeof(WorkingHoursInlineFunctions))]
-            [Description("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffStartDateDescription", typeof(WorkingHoursInlineFunctions))]
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffStartDateName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffStartDateDescription", typeof(WorkingHoursInlineFunctions))]
             DateTime startDate,
-            [DisplayName("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffEndDateName", typeof(WorkingHoursInlineFunctions))]
-            [Description("K2NE.WorkingHoursInlineFunctions.Properties.Resources", "DateDiffEndDateDescription", typeof(WorkingHoursInlineFunctions))]
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffEndDateName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "DateDiffEndDateDescription", typeof(WorkingHoursInlineFunctions))]
             DateTime endDate)
         {
             return WorkingHoursDateDiff(zoneName, startDate, endDate).TotalMinutes;        
         }
+
         #endregion
+
+        #region DateTime CalculateEscalationDate(zoneName, startDate, seconds);
+
+        /// <summary>
+        /// Performs a function.
+        /// </summary>
+        /// <param name="sourceValue">A string representing the source value for which the function will perform an operation. Does not have to be string.</param>
+        /// <returns>A string representing the result of the function. Does not have to be string.</returns>
+        [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateName", typeof(WorkingHoursInlineFunctions))]
+        [Description("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateDescription", typeof(WorkingHoursInlineFunctions))]
+        [K2Icon(typeof(WorkingHoursInlineFunctions), "Resources.Icon.png")]
+        // Must be a public static method.
+        public static DateTime CalculateEscalationDate(
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateZoneNameName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateZoneNameDescription", typeof(WorkingHoursInlineFunctions))]
+            string zoneName,
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateStartDateName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateStartDateDescription", typeof(WorkingHoursInlineFunctions))]
+            DateTime startDate,
+            [DisplayName("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateSecondsName", typeof(WorkingHoursInlineFunctions))]
+            [Description("WorkingHoursInlineFunctions.Properties.Resources", "CalculateEscalationDateSecondsDescription", typeof(WorkingHoursInlineFunctions))]
+            int seconds)
+        {
+
+            // Return the result.
+            return CalculateEscalationDatePrivate(zoneName, startDate, seconds);
+        }
+        #endregion
+
+        #region internal methods
+
+        private static DateTime CalculateEscalationDatePrivate(string zoneName, DateTime startDate, int seconds)
+        {
+            WorkflowManagementServer mngServer = null;
+            try
+            {
+                mngServer = new WorkflowManagementServer("localhost", 5555); //fairly safe to do this as inline function runs on K2 Server.
+                mngServer.Open();
+                //http://www.k2underground.com/forums/p/8275/31827.aspx
+                mngServer.ZoneLoad(zoneName);
+                return mngServer.ZoneCalculateEvent(zoneName, startDate, new TimeSpan(0, 0, 0, seconds));
+            }
+            catch (Exception ex)
+            {
+                //more detailed error in the k2server logs
+                throw new Exception(string.Format("Error: {0}{1}", ex.Message, ex.StackTrace), ex);
+            }
+            finally
+            {
+                if (mngServer != null)
+                {
+                    if (mngServer.Connection != null)
+                    {
+                        mngServer.Connection.Dispose();
+                    }
+                    mngServer = null;
+                }
+            }
+        }
 
         private static TimeSpan WorkingHoursDateDiff(string zoneName, DateTime startDate, DateTime endDate)
         {
@@ -166,5 +237,7 @@ namespace K2NE
 
             return workedHours;
         }
+
+        #endregion
     }
 }
